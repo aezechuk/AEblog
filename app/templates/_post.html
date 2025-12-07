@@ -4,13 +4,12 @@
             <img src="{{ post.author.avatar(70) }}" class="rounded-circle">
         </td>
         <td>
-            <b>
-                <a href="{{ url_for('user', username=post.author.username) }}">
-                    {{ post.author.username }}
-                </a>
-            </b>
-            says:<br>
-            {{ post.body }}
+            <a href="{{ url_for('user', username=post.author.username) }}">
+                <b>{{ post.author.username }}</b>
+            </a>
+            <span class="ms-1">{{ moment(post.timestamp).fromNow() }}</span>
+            <br>
+            {{ post.body_html | safe }}
         </td>
     </tr>
 </table>

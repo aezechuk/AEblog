@@ -8,6 +8,8 @@ from flask_login import UserMixin
 from hashlib import md5
 from time import time
 import jwt
+from markdown import markdown
+import bleach
 
 followers = sa.Table(
     'followers',
@@ -101,19 +103,43 @@ class User(UserMixin, db.Model):
 
 class Post(db.Model): 
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    body: so.Mapped[str] = so.mapped_column(sa.String(140))
+    title: so.Mapped[str] = so.mapped_column(sa.String(140))
+    slug: so.Mapped[str] = so.mapped_column(
+        sa.String(160),
+        unique=True,
+        index=True,
+    )
+    summary: so.Mapped[str | None] = so.mapped_column(sa.String(300))
+    body: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
+    body_html: so.Mapped[str] = so.mapped_column(sa.Text)
+    published: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=True, index=True)
     timestamp: so.Mapped[datetime] = so.mapped_column(
         sa.DateTime(timezone=True),
         index=True,
         default=lambda: datetime.now(timezone.utc)
     )
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), index=True)
-    
     author: so.Mapped[User] = so.relationship(back_populates='posts')
 
     def __repr__(self):
-        return f'<Post {self.body}>'
-    
+        return f'<Post {self.title or self.id}>'
+
+allowed_tags = bleach.sanitizer.ALLOWED_TAGS.union({
+    'p', 'pre', 'code', 'blockquote',
+    'h1', 'h2', 'h3', 'h4',
+    'ul', 'ol', 'li',
+    'strong', 'em'
+})
+
+def render_body_html(target, value, oldvalue, initiator):
+    target.body_html = bleach.clean(
+        markdown(value, extensions=['fenced_code', 'codehilite']),
+        tags=allowed_tags,
+        strip=True
+    )
+db.event.listen(Post.body, 'set', render_body_html)
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
+

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Blog</h1>
+
+{% for post in posts %}
+  <article>
+    <h2>
+      <a href="{{ url_for('post_detail', slug=post.slug) }}">
+        {{ post.title }}
+      </a>
+    </h2>
+    {% if post.summary %}
+      <p>{{ post.summary }}</p>
+    {% endif %}
+    <small>{{ moment(post.timestamp).format('LL') }}</small>
+  </article>
+{% endfor %}
+
+<nav aria-label="Blog pagination">
+  <ul class="pagination">
+    <li class="page-item{% if not prev_url %} disabled{% endif %}">
+      <a class="page-link" href="{{ prev_url }}">Newer posts</a>
+    </li>
+    <li class="page-item{% if not next_url %} disabled{% endif %}">
+      <a class="page-link" href="{{ next_url }}">Older posts</a>
+    </li>
+  </ul>
+</nav>
+{% endblock %}

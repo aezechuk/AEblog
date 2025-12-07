@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="blog-post">
+
+    <h1>{{ post.title }}</h1>
+
+    <p class="text-muted">
+      Published {{ moment(post.timestamp).format('LL') }}
+      by {{ post.author.username }}
+    </p>
+
+    {% if post.summary %}
+      <p class="lead">{{ post.summary }}</p>
+      <hr>
+    {% endif %}
+
+    <div class="post-body">
+      {{ post.body_html | safe }}
+    </div>
+
+  </article>
+{% endblock %}

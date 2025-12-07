@@ -7,6 +7,7 @@ import sqlalchemy as sa
 from app.models import User, Post
 from datetime import datetime, timezone
 from app.email import send_password_reset_email
+from slugify import slugify
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -44,28 +45,12 @@ def before_request():
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
-@login_required
+@app.route('/')
+@app.route('/index')
 def index():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post is now live!')
-        return redirect(url_for('index'))
-    
-    page = request.args.get('page', 1, type=int)
-    posts = db.paginate(current_user.following_posts(), page=page,
-                        per_page=app.config['POSTS_PER_PAGE'], error_out=False)
-    next_url = url_for('index', page=posts.next_num) \
-        if posts.has_next else None
-    prev_url = url_for('index', page=posts.prev_num) \
-        if posts.has_prev else None
-    return render_template('index.html', title='Home', form=form,
-                           posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
+    latest_posts = (Post.query.filter(Post.published ==True, Post.slug.isnot(None))
+                    .order_by(Post.timestamp.desc()).limit(3).all())
+    return render_template('index.html', title='Home', latest_posts=latest_posts)
 
 @app.route('/user/<username>')
 @login_required
@@ -195,3 +180,45 @@ def explore():
         if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items,
                            next_url=next_url, prev_url=prev_url, form=None)
+
+@app.route('/blog')
+def blog():
+    page = request.args.get('page', 1, type=int)
+
+    posts = db.paginate(Post.query.filter(Post.published == True, Post.slug.isnot(None))
+        .order_by(Post.timestamp.desc()),
+        page=page,
+        per_page=5,
+        error_out=False
+    )
+
+    next_url = url_for('blog', page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('blog', page=posts.prev_num) if posts.has_prev else None
+    return render_template('blog/index.html', posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
+
+@app.route('/blog/<slug>')
+def post_detail(slug):
+    post = (Post.query.filter(Post.slug==slug, Post.published == True).first_or_404())
+
+    return render_template('blog/post.html', post=post)
+
+@app.route('/blog/new', methods=['GET', 'POST'])
+@login_required
+def new_blog_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            summary=form.summary.data,
+            body=form.body.data,
+            slug=slugify(form.title.data),
+            author=current_user
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is live!')
+        return redirect(url_for('blog'))
+
+    return render_template('blog/new.html', form=form)
