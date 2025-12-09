@@ -1,0 +1,94 @@
+# Arielle’s Blog & Security Writing Platform
+
+This repository contains the source code for my personal blog and security writing platform, built with **Flask** and deployed on **AWS Elastic Beanstalk**. The site serves as a public archive of real-world security writeups, vulnerability analysis, and lessons learned, alongside reflections from my career in technology.
+
+The project began as a way to deepen my understanding of Flask and backend systems, and evolved into a production-deployed application supporting long-form technical writing.
+
+🌐 **Live site:** https://arielleezechukwu.com
+
+---
+
+## Project Focus
+
+This project emphasizes:
+
+- Realistic backend application structure  
+- Secure configuration and deployment practices  
+- Clean separation between presentation, business logic, and data  
+- Practical features that support writing and publishing workflows  
+
+It is intentionally scoped as a **single-author platform**, rather than a multi-user CMS.
+
+---
+
+## Key Features
+
+- Public blog with post archives and individual post pages  
+- Markdown-based content rendering with HTML sanitization  
+- Post summaries for previews on the home and blog pages  
+- Slug-based URLs for clean, readable links  
+- Admin-only authentication for content creation  
+- Secure deployment using AWS Elastic Beanstalk  
+- HTTPS and DNS management via Cloudflare  
+
+---
+
+## Technology Overview
+
+### Backend
+- Python / Flask  
+- SQLAlchemy ORM  
+- Flask-Login  
+- Flask-Migrate  
+- Flask-Mail  
+- Markdown + Bleach (sanitization)
+
+### Frontend
+- Jinja templates  
+- Bootstrap  
+- Moment.js for date handling  
+
+### Infrastructure
+- AWS Elastic Beanstalk (Python platform)  
+- SQLite (local development)  
+- PostgreSQL (production)  
+- Environment-based configuration (secrets not committed)
+
+---
+
+## Architecture Notes
+
+- Content is stored in a relational database with explicit `published` and `summary` fields to support archival writing.  
+- Markdown is converted and sanitized on write to prevent XSS.  
+- The application is designed to minimize attack surface by limiting authentication and authoring capabilities.  
+- Followers and social features exist in the underlying model but are intentionally unused.
+
+---
+
+## Current Status & Roadmap
+
+### Completed
+- Production deployment on AWS  
+- Content rendering and archival structure  
+- Home and blog UX refinements  
+- Secure configuration and logging  
+
+### Planned
+- Unit and integration testing  
+- Post editing and deletion  
+- Draft/unpublished content workflow  
+- CI-based deployment validation  
+
+---
+
+## About the Author
+
+I’m a systems thinker who likes to tinker. I write about real-world security incidents, vulnerabilities, and lessons learned, drawing from experience across cybersecurity operations, delivery management, technology leadership, and community-based work.
+
+This project represents how I think about systems: practical, secure, and designed around real-world usage.
+
+---
+
+## Notes
+
+This repository is a **personal project and portfolio artifact**. It is not intended to be a reusable template or drop-in application.
