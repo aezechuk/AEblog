@@ -1,5 +1,6 @@
 from flask import Flask
 from config import Config
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -9,8 +10,12 @@ import os
 from flask_mail import Mail
 from flask_moment import Moment
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
