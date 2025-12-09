@@ -32,6 +32,13 @@
               {{ post.title }}
             </a>
           </h5>
+
+          {% if post.summary %}
+            <p class="text-muted mt-1 mb-1">
+              {{ post.summary }}
+            </p>
+          {% endif %}
+
           <small class="text-muted">
             {{ moment(post.timestamp).format('LL') }}
           </small>
