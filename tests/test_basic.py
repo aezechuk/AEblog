@@ -37,3 +37,27 @@ def test_login_valid_credentials(client):
     # Page should show the user is logged in
     assert response.status_code == 200
     assert b"testuser" in response.data
+
+def test_logout_redirects_home(client):
+    # Create user
+    with client.application.app_context():
+        user = User(username="tester", email="tester@example.com")
+        user.set_password("password")
+        db.session.add(user)
+        db.session.commit()
+
+    # Log in
+    login_response = client.post("/login",
+                data={"username": "tester", "password": "password"},
+                follow_redirects=True)
+    
+    assert login_response.status_code == 200
+    assert b"Invalid username or password" not in login_response.data
+
+    
+    # Log out
+    response = client.get("/logout", follow_redirects=True)
+
+    # Should be redirected back to homepage
+    assert response.status_code == 200
+    assert b"Home - AE's Blog" in response.data # Anchor phrase
