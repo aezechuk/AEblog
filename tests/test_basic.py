@@ -1,5 +1,5 @@
 from app import db
-from app.models import User
+from app.models import User, Post
 
 
 def test_home_page_loads(client):
@@ -122,3 +122,39 @@ def test_new_post_requires_login(client):
     # Should redirect to login page
     assert response.status_code == 200
     assert b"Sign In" in response.data # 'Sign-In' header in login.hmtl
+
+def test_slugify(client):
+    # Create user
+    with client.application.app_context():
+        user = User(username="tester", email="tester@example.com")
+        user.set_password("password")
+        db.session.add(user)
+        db.session.commit()
+
+    # Log in
+    login_response = client.post("/login",
+                data={"username": "tester", "password": "password"},
+                follow_redirects=True)
+    
+    assert b"Invalid username or password" not in login_response.data
+
+    # Create a post
+    post_response = client.post(
+        "/blog/new",
+        data={"title": "Title of Test Post", "summary": "Summary of a test post.", "body": "Body of a test post."},
+        follow_redirects=True)
+    
+    # Retrieve the created post from the database
+    with client.application.app_context():
+        post = Post.query.filter_by(title="Title of Test Post").first()
+        assert post is not None
+
+        # Check that slug was generated correctly
+        assert post.slug == "title-of-test-post"
+
+    # Now hit the post detail page using the slug
+    response = client.get(f"/blog/{post.slug}")                                    
+
+    assert response.status_code == 200
+    assert b"Title of Test Post" in response.data
+    assert b"Summary of a test post." in response.data
