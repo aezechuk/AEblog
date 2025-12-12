@@ -114,3 +114,11 @@ def test_new_post(client):
     assert response.status_code == 200
     assert b"Title of Test Post" in response.data
     assert b"Summary of a test post." in response.data
+
+def test_new_post_requires_login(client):
+    # Try to access the protected route without logging in
+    response = client.get("blog/new", follow_redirects=True)
+
+    # Should redirect to login page
+    assert response.status_code == 200
+    assert b"Sign In" in response.data # 'Sign-In' header in login.hmtl
