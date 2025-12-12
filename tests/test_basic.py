@@ -46,7 +46,7 @@ def test_logout_redirects_home(client):
         db.session.add(user)
         db.session.commit()
 
-    # Log in
+    # Log in with correct credentials
     login_response = client.post("/login",
                 data={"username": "tester", "password": "password"},
                 follow_redirects=True)
@@ -61,3 +61,28 @@ def test_logout_redirects_home(client):
     # Should be redirected back to homepage
     assert response.status_code == 200
     assert b"Home - AE's Blog" in response.data # Anchor phrase
+
+def test_logged_in_user_create_post(client):
+    # Create user
+    with client.application.app_context():
+        user = User(username="tester", email="tester@example.com")
+        user.set_password("password")
+        db.session.add(user)
+        db.session.commit()
+
+    # Log in
+    login_response = client.post("/login",
+                data={"username": "tester", "password": "password"},
+                follow_redirects=True)
+    
+    assert b"Invalid username or password" not in login_response.data
+
+    # Submit Post request
+    response = client.post(
+        "/blog/new",
+        data={"title": "Test", "summary": "Test post.", "body": "This is a test post.", "published": True},
+        follow_redirects=True)
+
+    # Assert Success
+    assert response.status_code == 200
+    assert b"Test" in response.data
