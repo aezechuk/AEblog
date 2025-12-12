@@ -77,7 +77,7 @@ def test_logged_in_user_create_post(client):
     
     assert b"Invalid username or password" not in login_response.data
 
-    # Submit Post request
+    # Create a post
     response = client.post(
         "/blog/new",
         data={"title": "Test", "summary": "Test post.", "body": "This is a test post.", "published": True},
@@ -86,3 +86,31 @@ def test_logged_in_user_create_post(client):
     # Assert Success
     assert response.status_code == 200
     assert b"Test" in response.data
+
+def test_new_post(client):
+    # Create user
+    with client.application.app_context():
+        user = User(username="tester", email="tester@example.com")
+        user.set_password("password")
+        db.session.add(user)
+        db.session.commit()
+
+    # Log in
+    login_response = client.post("/login",
+                data={"username": "tester", "password": "password"},
+                follow_redirects=True)
+    
+    assert b"Invalid username or password" not in login_response.data
+
+    # Create a post
+    post_response = client.post(
+        "/blog/new",
+        data={"title": "Title of Test Post", "summary": "Summary of a test post.", "body": "Body of a test post."},
+        follow_redirects=True)
+    
+    # Load blogs listing page
+    response = client.get("/blog")
+
+    assert response.status_code == 200
+    assert b"Title of Test Post" in response.data
+    assert b"Summary of a test post." in response.data
