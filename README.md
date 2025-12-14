@@ -71,13 +71,35 @@ It is intentionally scoped as a **single-author platform**, rather than a multi-
 - Production deployment on AWS  
 - Content rendering and archival structure  
 - Home and blog UX refinements  
-- Secure configuration and logging  
+- Secure configuration and logging
+- - CI-based deployment validation 
 
 ### Planned
 - Unit and integration testing  
 - Post editing and deletion  
 - Draft/unpublished content workflow  
-- CI-based deployment validation  
+ 
+
+## Testing
+
+This project includes a foundational automated test suite built with pytest and Flask’s test client.
+The purpose is to validate core application behavior—authentication, post creation, routing, and slug generation—while maintaining stability as the project grows.
+
+Tests run against an in-memory SQLite database, with application contexts created and cleaned up automatically. This ensures fast, isolated execution without touching local or production data.
+
+### What’s Covered
+- Route accessibility and basic page loads
+- Login and logout workflows
+- Handling of invalid and valid authentication attempts
+- Blog post creation (authenticated-only behavior)
+- Automatic slug generation
+- Unique slug handling when titles collide
+
+These tests were intentionally scoped to reinforce understanding of Flask internals, request flow, and database interactions. They also form the foundation for continuous integration and eventual continuous deployment.
+
+### Continuous Integration
+All tests run automatically in GitHub Actions on each push and pull request.
+The CI workflow installs dependencies, executes the test suite, and ensures the application remains stable before any deployment step.
 
 ---
 
