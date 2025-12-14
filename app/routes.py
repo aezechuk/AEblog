@@ -4,7 +4,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
-from app.models import User, Post
+from app.models import User, Post, generate_unique_slug
 from datetime import datetime, timezone
 from app.email import send_password_reset_email
 from slugify import slugify
@@ -213,7 +213,7 @@ def new_blog_post():
             title=form.title.data,
             summary=form.summary.data,
             body=form.body.data,
-            slug=slugify(form.title.data),
+            slug=generate_unique_slug(form.title.data),
             author=current_user
         )
         db.session.add(post)

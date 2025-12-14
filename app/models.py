@@ -10,6 +10,7 @@ from time import time
 import jwt
 from markdown import markdown
 import bleach
+from slugify import slugify
 
 followers = sa.Table(
     'followers',
@@ -123,6 +124,18 @@ class Post(db.Model):
 
     def __repr__(self):
         return f'<Post {self.title or self.id}>'
+
+def generate_unique_slug(title):
+    base_slug = slugify(title)
+    slug = base_slug
+    counter = 1
+
+    # Query inside loop to ensure uniqueness
+    while db.session.scalar(sa.select(Post).where(Post.slug == slug)) is not None:
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
+    return slug
 
 allowed_tags = bleach.sanitizer.ALLOWED_TAGS.union({
     'p', 'pre', 'code', 'blockquote',

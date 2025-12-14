@@ -158,3 +158,42 @@ def test_slugify(client):
     assert response.status_code == 200
     assert b"Title of Test Post" in response.data
     assert b"Summary of a test post." in response.data
+
+def test_slug_collision(client):
+    # Create User
+    with client.application.app_context():
+        user = User(username="tester", email="tester@example.com")
+        user.set_password("password")
+        db.session.add(user)
+        db.session.commit()
+
+    # Login
+    client.post("/login",
+                data={"username": "tester", "password": "password"},
+                follow_redirects=True)
+    
+    # Create first post
+    client.post("/blog/new",
+                data={"title": "Collision Test",
+                      "summary": "First post summary",
+                      "body": "First post body"},
+                      follow_redirects=True)
+    
+    # Create second post with same title
+    client.post("/blog/new",
+                data={"title": "Collision Test",
+                      "summary": "Second post summary",
+                      "body": "Second post body"},
+                      follow_redirects=True) 
+    # Retrieve posts
+    with client.application.app_context():
+        posts = Post.query.filter_by(title="Collision Test").order_by(Post.id).all()
+
+        assert len(posts) == 2
+
+        slug1 = posts[0].slug
+        slug2 = posts[1].slug
+
+        assert slug1 == "collision-test"
+        assert slug2 != slug1
+        assert slug2.startswith("collision-test-")
