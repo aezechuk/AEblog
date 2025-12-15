@@ -1,4 +1,8 @@
 ![CI/CD](https://github.com/aezechuk/AEblog/actions/workflows/deploy.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-2.0+-black.svg?logo=flask)
+![AWS Elastic Beanstalk](https://img.shields.io/badge/AWS-Elastic_Beanstalk-orange.svg?logo=amazonaws)
+
 # Arielle’s Blog & Security Writing Platform
 
 This repository contains the source code for my personal blog and security writing platform, built with **Flask** and deployed on **AWS Elastic Beanstalk**. The site serves as a public archive of real-world security writeups, vulnerability analysis, and lessons learned, alongside reflections from my career in technology.
