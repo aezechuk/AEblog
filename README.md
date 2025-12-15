@@ -1,3 +1,4 @@
+![CI/CD](https://github.com/aezechuk/AEblog/actions/workflows/deploy.yml/badge.svg)
 # Arielle’s Blog & Security Writing Platform
 
 This repository contains the source code for my personal blog and security writing platform, built with **Flask** and deployed on **AWS Elastic Beanstalk**. The site serves as a public archive of real-world security writeups, vulnerability analysis, and lessons learned, alongside reflections from my career in technology.
