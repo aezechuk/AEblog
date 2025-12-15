@@ -3,6 +3,15 @@ name: CI/CD - Test and Deploy to Elastic Beanstalk
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "*.md"
+  pull_request:
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "*.md"    
 
 jobs: 
   test:
@@ -29,6 +38,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: production
+
+    # ONLY deploy on push (not PR) AND only when code changes
+    if: github.event_name == 'push'
 
     steps:
       - name: Check out repository
