@@ -119,5 +119,3 @@ This project represents how I think about systems: practical, secure, and design
 ## Notes
 
 This repository is a **personal project and portfolio artifact**. It is not intended to be a reusable template or drop-in application.
-
-<!-- CI/CD test: README change should NOT deploy -->
