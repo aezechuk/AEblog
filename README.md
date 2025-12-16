@@ -11,6 +11,8 @@ The project began as a way to deepen my understanding of Flask and backend syste
 
 🌐 **Live site:** https://arielleezechukwu.com
 
+▶️ **Watch the Project Demo Video:**  https://www.loom.com/share/73e3d1cd58074a8d9366e015e28edaca
+
 ---
 
 ## Project Focus
