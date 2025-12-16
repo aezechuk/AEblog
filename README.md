@@ -102,9 +102,9 @@ Tests run against an in-memory SQLite database, with application contexts create
 
 These tests were intentionally scoped to reinforce understanding of Flask internals, request flow, and database interactions. They also form the foundation for continuous integration and eventual continuous deployment.
 
-### Continuous Integration
+### Continuous Integration / Continuous Deployment
 All tests run automatically in GitHub Actions on each push and pull request.
-The CI workflow installs dependencies, executes the test suite, and ensures the application remains stable before any deployment step.
+The CI workflow installs dependencies, executes the test suite, and ensures the application remains stable before any deployment step. The CD workflow has been implemented to release new application versions to AWS Elastic Beanstalk, including workflow filters to prevent redeployments on documentation-only changes.
 
 ---
 
