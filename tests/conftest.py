@@ -12,12 +12,8 @@ from app import app, db
 
 @pytest.fixture
 def client():
-    # Create temp database file
-    db_fd, db_path = tempfile.mkstemp()
-
     app.config.update(
         TESTING=True,
-        SQLALCHEMY_DATABASE_URI=f"sqlite:///{db_path}",
         WTF_CSRF_ENABLED=False,
     )
 
@@ -29,5 +25,6 @@ def client():
 
         db.drop_all()
 
+def pytest_sessionfinish(session, exitstatus):
     os.close(db_fd)
     os.unlink(db_path)
