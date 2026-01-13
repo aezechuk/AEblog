@@ -1,6 +1,7 @@
-import sys
 import os
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
+import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import pytest
