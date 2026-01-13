@@ -11,6 +11,7 @@ from app import app, db
 def client():
     app.config.update(TESTING = True,
                       SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:",
+                      SQLALCHEMY_BINDS={}, 
                       WTF_CSRF_ENABLED = False)
 
     
