@@ -28,7 +28,7 @@
       {% for post in latest_posts %}
         <article class="mb-3">
           <h5>
-            <a href="{{ url_for('post_detail', slug=post.slug) }}">
+            <a href="{{ url_for('blog.post_detail', slug=post.slug) }}">
               {{ post.title }}
             </a>
           </h5>
@@ -48,7 +48,7 @@
       <p>No posts yet.</p>
     {% endif %}
 
-    <a href="{{ url_for('blog') }}">View all posts →</a>
+    <a href="{{ url_for('blog.blog') }}">View all posts →</a>
   </div>
 </div>
 {% endblock %}

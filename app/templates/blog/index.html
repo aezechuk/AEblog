@@ -6,7 +6,7 @@
   {% for post in posts %}
   <article class="mb-5">
     <h2 class="mt-4">
-      <a href="{{ url_for('post_detail', slug=post.slug) }}">
+      <a href="{{ url_for('blog.post_detail', slug=post.slug) }}">
         {{ post.title }}
       </a>
     </h2>
