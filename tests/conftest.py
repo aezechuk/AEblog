@@ -9,9 +9,11 @@ from app import app, db
 @pytest.fixture
 def client():
     app.config.update(TESTING = True,
-                      SQLALCHEMY_DATABASE_URI = "sqlite://",
+                      SQLALCHEMY_DATABASE_URI = "sqlite:///:memory",
                       WTF_CSRF_ENABLED = False)
 
+    db.engine.dispose()  # forces old connection to drop and create new one
+    
     with app.app_context():
         db.create_all()
         yield app.test_client()
