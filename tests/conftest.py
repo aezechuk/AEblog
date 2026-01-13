@@ -12,9 +12,9 @@ def client():
                       SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:",
                       WTF_CSRF_ENABLED = False)
 
-    db.engine.dispose()  # forces old connection to drop and create new one
     
     with app.app_context():
+        db.engine.dispose()  # forces old connection to drop and create new one
         db.create_all()
         
         with app.test_client() as client:
