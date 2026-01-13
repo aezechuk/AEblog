@@ -25,6 +25,3 @@ def client():
 
         db.drop_all()
 
-def pytest_sessionfinish(session, exitstatus):
-    os.close(db_fd)
-    os.unlink(db_path)
