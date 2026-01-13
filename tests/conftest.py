@@ -1,10 +1,13 @@
 import os
-import sys
 import tempfile
-import pytest
 
+db_fd, db_path = tempfile.mkstemp()
+os.environ["DATABASE_URL"] = f"sqlite:///{db_path}"
+
+import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import pytest
 from app import app, db
 
 @pytest.fixture
