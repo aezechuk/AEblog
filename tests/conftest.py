@@ -14,7 +14,7 @@ def client():
 
     
     with app.app_context():
-        db.engine.dispose()  # forces old connection to drop and create new one
+        db.engines.clear()  # forces old connection to drop and create new one
         db.create_all()
         
         with app.test_client() as client:
