@@ -19,7 +19,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.login_view = 'login'
+login.login_view = 'auth.login'
 mail = Mail(app)
 moment = Moment(app)
 

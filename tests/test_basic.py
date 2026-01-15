@@ -117,7 +117,7 @@ def test_new_post(client):
 
 def test_new_post_requires_login(client):
     # Try to access the protected route without logging in
-    response = client.get("blog/new", follow_redirects=True)
+    response = client.get("/blog/new", follow_redirects=True)
 
     # Should redirect to login page
     assert response.status_code == 200
