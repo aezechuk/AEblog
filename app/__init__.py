@@ -51,10 +51,13 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('Microblog startup')
 
-from app.routes.blog import bp as blog_bp
+from app.blog.routes import bp as blog_bp
 app.register_blueprint(blog_bp)
 
-from app.routes.auth import bp as auth_bp
+from app.auth.routes import bp as auth_bp
 app.register_blueprint(auth_bp)
+
+from app.errors.routes import bp as errors_bp
+app.register_blueprint(errors_bp)
 
 from app import main_routes as routes, models, errors
