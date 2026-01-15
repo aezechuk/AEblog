@@ -54,4 +54,7 @@ if not app.debug:
 from app.routes.blog import bp as blog_bp
 app.register_blueprint(blog_bp)
 
+from app.routes.auth import bp as auth_bp
+app.register_blueprint(auth_bp)
+
 from app import main_routes as routes, models, errors
