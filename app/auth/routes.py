@@ -1,10 +1,9 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-
+from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
 from app import db
 import sqlalchemy as sa
 from app.models import User
-from app.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.email import send_password_reset_email
 from urllib.parse import urlsplit
 

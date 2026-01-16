@@ -1,11 +1,10 @@
 from flask import Blueprint, current_app, request, render_template, flash, redirect, url_for, abort 
 from flask_login import current_user, login_required
 from app import db 
-
+from app.users.forms import EditProfileForm, EmptyForm
 
 import sqlalchemy as sa 
 from app.models import User, Post
-from app.forms import EditProfileForm, EmptyForm 
 
 bp = Blueprint("users", __name__)
 
