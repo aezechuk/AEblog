@@ -60,4 +60,7 @@ app.register_blueprint(auth_bp)
 from app.errors.routes import bp as errors_bp
 app.register_blueprint(errors_bp)
 
+from app.users.routes import bp as users_bp
+app.register_blueprint(users_bp)
+
 from app import main_routes as routes, models, errors

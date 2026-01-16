@@ -4,7 +4,7 @@
             <img src="{{ post.author.avatar(70) }}" class="rounded-circle">
         </td>
         <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
+            <a href="{{ url_for('users.user', username=post.author.username) }}">
                 <b>{{ post.author.username }}</b>
             </a>
             <span class="ms-1">{{ moment(post.timestamp).fromNow() }}</span>
