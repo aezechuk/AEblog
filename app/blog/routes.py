@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_login import current_user, login_required
 
-from app import db
+from app.extensions import db
 from app.models import Post, generate_unique_slug
 from app.blog.forms import PostForm
 

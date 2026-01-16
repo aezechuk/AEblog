@@ -1,4 +1,4 @@
-from app import login, db, app
+from app.extensions import login, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 from typing import Optional

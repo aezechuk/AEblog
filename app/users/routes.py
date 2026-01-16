@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, request, render_template, flash, redirect, url_for, abort 
 from flask_login import current_user, login_required
-from app import db 
+from app.extensions import db 
 from app.users.forms import EditProfileForm, EmptyForm
 
 import sqlalchemy as sa 
