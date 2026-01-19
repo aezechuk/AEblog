@@ -1,11 +1,21 @@
+# Virtual environments
 venv/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Local databases (old + new)
 app.db
-# new db location
-instance/ 
-# Elastic Beanstalk Files
+instance/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+
+# Elastic Beanstalk
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
-logs/
