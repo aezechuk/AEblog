@@ -9,6 +9,26 @@
       Published {{ moment(post.timestamp).format('LL') }}
       by {{ post.author.username }}
     </p>
+{% if current_user.is_authenticated and current_user == post.author %}
+  <div class="post-actions" style="margin: 1rem 0;">
+    <a class="btn btn-sm btn-outline-primary"
+       href="{{ url_for('blog.edit_post', id=post.id) }}">
+       Edit
+    </a>
+
+    <form method="post"
+          action="{{ url_for('blog.delete_post', id=post.id) }}"
+          style="display:inline;"
+          onsubmit="return confirm('Delete this post?');">
+      {% if csrf_token is defined %}
+          {{ csrf_token() }}
+      {% endif %}
+      <button class="btn btn-sm btn-outline-danger" type="submit">
+        Delete
+      </button>
+    </form>
+  </div>
+{% endif %}
 
     {% if post.summary %}
       <p class="lead">{{ post.summary }}</p>

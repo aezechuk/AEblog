@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import Blueprint, request, render_template, flash, redirect, url_for, abort
 from flask_login import current_user, login_required
 
 from app.extensions import db
@@ -49,3 +49,41 @@ def new_blog_post():
         return redirect(url_for('blog.blog'))
 
     return render_template('blog/new.html', form=form)
+
+@bp.route('/post/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    
+    if post.author != current_user:
+        abort(403)
+
+    form = PostForm(obj=post)
+
+    if form.validate_on_submit():
+        if post.title != form.title.data:
+            post.slug = generate_unique_slug(form.title.data)
+        
+        post.title = form.title.data
+        post.summary = form.summary.data
+        post.body = form.body.data
+
+        db.session.commit()
+        flash('Your post has been updated!')
+        return redirect(url_for('blog.post_detail', slug=post.slug))
+
+    return render_template('blog/edit.html', form=form, post=post)
+
+@bp.route('/post/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+
+    if post.author != current_user:
+        abort(403)
+
+    db.session.delete(post)
+    db.session.commit()
+    flash('Post deleted.')
+
+    return redirect(url_for('main.index'))
