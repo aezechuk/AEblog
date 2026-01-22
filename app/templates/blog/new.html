@@ -5,10 +5,11 @@
     <form method="post">
         {{ form.hidden_tag() }}
 
-        <p>{{ form.title.label }}<br>{{ form.title(size=64) }}</p>
-        <p>{{ form.summary.label }}<br>{{ form.summary(rows=3) }}</p>
-        <p>{{ form.body.label }}<br>{{ form.body(rows=12) }}</p>
+        <p>{{ form.title.label }}<br>{{ form.title(size=60) }}</p>
+        <p>{{ form.summary.label }}<br>{{ form.summary(rows=3, cols=60) }}</p>
+        <p>{{ form.body.label }}<br>{{ form.body(rows=12, cols=60) }}</p>
 
         {{ form.submit() }}
     </form>
 {% endblock %}
+0

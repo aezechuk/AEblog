@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2> Edit Post</h2>
+
+    <form method="post">
+        {{ form.hidden_tag()}}
+
+        <div>
+            {{ form.title.label}}<br>
+            {{form.title(size=60) }}
+        </div>
+
+        <div>
+            {{ form.title.label }}<br>
+            {{ form.title(size=60) }}
+        </div>
+
+        <div>
+            {{form.body.label }}<br>
+            {{ form.body(rows=10, cols=60) }}
+        </div>
+
+        <div style="margin-top: 1rem;">
+            {{form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('blog.post_detail', slug=post.slug) }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
