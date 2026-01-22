@@ -5,6 +5,7 @@ class Config:
     # Security
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-me'
     # Database
+    WTF_CSRF_ENABLE = True
     DATABASE_URL = os.environ.get('DATABASE_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)

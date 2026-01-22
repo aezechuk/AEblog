@@ -20,6 +20,11 @@
           action="{{ url_for('blog.delete_post', id=post.id) }}"
           style="display:inline;"
           onsubmit="return confirm('Delete this post?');">
+
+      {% if csrf_token is defined %}
+        {{ csrf_token() }}
+      {% endif %}
+      
       <button class="btn btn-sm btn-outline-danger" type="submit">
         Delete
       </button>
