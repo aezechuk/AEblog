@@ -4,7 +4,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
-from app.extensions import db, migrate, login, mail, moment, csrf
+from app.extensions import db, migrate, login, mail, moment, csrf, limiter
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -20,6 +20,7 @@ def create_app(config_class=Config):
     mail.init_app(app)
     moment.init_app(app)
     csrf.init_app(app)
+    limiter.init_app(app)
 
     login.login_view = 'auth.login'
 

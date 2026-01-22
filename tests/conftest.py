@@ -7,11 +7,13 @@ from config import Config
 
 class TestConfig(Config):
     TESTING = True
+    WTF_CSRF_ENABLED = False
+    RATELIMIT_ENABLED = False
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_ENGINE_OPTIONS = {
     "connect_args": {"check_same_thread": False}
 }
-    WTF_CSRF_ENABLED = False
+    
     SECRET_KEY = "test-secret"
 
 

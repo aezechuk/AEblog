@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
-from app.extensions import db
+from app.extensions import db, limiter
 import sqlalchemy as sa
 from app.models import User
 from app.auth.email import send_password_reset_email
@@ -25,6 +25,7 @@ bp = Blueprint("auth", __name__)
 #     return render_template('auth/register.html', title='Register', form=form)
 
 @bp.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))

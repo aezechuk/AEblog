@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for, abort
 from flask_login import current_user, login_required
 
-from app.extensions import db
+from app.extensions import db, limiter
 from app.models import Post, generate_unique_slug
 from app.blog.forms import PostForm
 
@@ -32,6 +32,7 @@ def post_detail(slug):
 
 @bp.route('/blog/new', methods=['GET', 'POST'])
 @login_required
+@limiter.limit("10 per hour")
 def new_blog_post():
     form = PostForm()
 
@@ -52,6 +53,7 @@ def new_blog_post():
 
 @bp.route('/post/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
+@limiter.limit("10 per hour")
 def edit_post(id):
     post = Post.query.get_or_404(id)
     
@@ -76,6 +78,7 @@ def edit_post(id):
 
 @bp.route('/post/<int:id>/delete', methods=['POST'])
 @login_required
+@limiter.limit("10 per hour")
 def delete_post(id):
     post = Post.query.get_or_404(id)
 
