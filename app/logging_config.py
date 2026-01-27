@@ -7,6 +7,7 @@ def configure_logging(app):
     if not logger.handlers:
         handler = watchtower.CloudWatchLogHandler(
             log_group_name="aeblog/app"
+            region_name ="us-east-2"
         )
 
         formatter = logging.Formatter(
