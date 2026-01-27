@@ -1,6 +1,10 @@
 import watchtower, logging
 
 def configure_logging(app):
+    # Skip CloudWatch logging during tests / CI
+    if app.testing:
+        return
+    
     logger = logging.getLogger("security.audit")
     logger.setLevel(logging.INFO)
 
