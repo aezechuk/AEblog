@@ -5,6 +5,7 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from app.extensions import db, migrate, login, mail, moment, csrf, limiter
+from app.logging_config import configure_logging
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -21,6 +22,7 @@ def create_app(config_class=Config):
     moment.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
+    configure_logging(app)
 
     login.login_view = 'auth.login'
 
