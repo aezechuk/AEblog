@@ -19,5 +19,3 @@ def configure_logging(app):
         handler.setFormatter(formatter)
 
         logger.addHandler(handler)
-
-    logger.info("security logger initialized")
