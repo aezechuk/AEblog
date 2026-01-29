@@ -1,3 +1,4 @@
+import json
 import logging
 from flask import request
 from flask_login import current_user
@@ -47,4 +48,5 @@ def log_event(
     if extra and isinstance(extra, dict):
         event.update(extra)
 
+    logger.info(json.dumps(event))
     logger.info(event)
