@@ -6,7 +6,7 @@ import sqlalchemy as sa
 from app.models import User
 from app.auth.email import send_password_reset_email
 from urllib.parse import urlsplit
-
+from app.security.audit import log_event
 
 bp = Blueprint("auth", __name__)
 
@@ -35,8 +35,10 @@ def login():
             sa.select(User).where(User.username == form.username.data))
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
+            log_event("login_failed", success=False)
             return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
+        log_event("login_success")
         next_page = request.args.get('next')
         #retrieves url the user tried to visit before redirect to login page
         if not next_page or urlsplit(next_page).netloc != '':
@@ -48,6 +50,7 @@ def login():
 @bp.route('/logout')
 @login_required
 def logout():
+    log_event("logout")
     logout_user()
     return redirect(url_for('main.index'))
 
@@ -57,11 +60,15 @@ def reset_password(token):
         return redirect(url_for('main.index'))
     user = User.verify_reset_password_token(token)
     if not user:
+        log_event("password_reset_invalid_token", success=False)
         return redirect(url_for('main.index'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
+
+        log_event("password_reset_success", authenticated=False)
+
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
@@ -72,6 +79,8 @@ def reset_password_request():
         return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
+        log_event("password_reset_requested")
+
         user = db.session.scalar(
             sa.select(User).where(User.email == form.email.data))
         if user:
