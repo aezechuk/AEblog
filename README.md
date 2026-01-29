@@ -11,7 +11,7 @@ The project began as a way to deepen my understanding of Flask and backend syste
 
 🌐 **Live site:** https://arielleezechukwu.com
 
-▶️ **Watch the Project Demo Video:**  https://www.loom.com/share/73e3d1cd58074a8d9366e015e28edaca
+▶️ **Watch the Project Demo Video: Update coming soon**  https://www.loom.com/share/73e3d1cd58074a8d9366e015e28edaca
 
 ---
 
@@ -32,11 +32,12 @@ It is intentionally scoped as a **single-author platform**, rather than a multi-
 
 - Public blog with post archives and individual post pages  
 - Markdown-based content rendering with HTML sanitization  
-- Post summaries for previews on the home and blog pages  
+- Full CRUD functionality for blog posts
 - Slug-based URLs for clean, readable links  
 - Admin-only authentication for content creation  
-- Secure deployment using AWS Elastic Beanstalk  
-- HTTPS and DNS management via Cloudflare  
+- Secure deployment using AWS Elastic Beanstalk and CloudWatch  
+- HTTPS and DNS management via Cloudflare 
+
 
 ---
 
@@ -47,7 +48,10 @@ It is intentionally scoped as a **single-author platform**, rather than a multi-
 - SQLAlchemy ORM  
 - Flask-Login  
 - Flask-Migrate  
-- Flask-Mail  
+- Flask-Mail 
+- Flask Limiter
+- Blueprints
+- Logging
 - Markdown + Bleach (sanitization)
 
 ### Frontend
@@ -60,6 +64,14 @@ It is intentionally scoped as a **single-author platform**, rather than a multi-
 - SQLite (local development)  
 - PostgreSQL (production)  
 - Environment-based configuration (secrets not committed)
+
+### Security and Observability
+- Audit logging for authentication and credential events
+- Structured JSON logs
+- Centralized logging (CloudWatch)
+- Brute-force detection via metric filters
+- Rate limiting on authentication endpoints
+- CSRF protection
 
 ---
 
@@ -79,12 +91,12 @@ It is intentionally scoped as a **single-author platform**, rather than a multi-
 - Content rendering and archival structure  
 - Home and blog UX refinements  
 - Secure configuration and logging
-- - CI-based deployment validation 
+- CI-based deployment validation 
 
 ### Planned
-- Unit and integration testing  
-- Post editing and deletion  
-- Draft/unpublished content workflow  
+- Containerization via Amazon ECS
+- Confirmed Pytest coverage of at least 70% 
+- Migration of secrets to AWS Secrets Manager 
  
 
 ## Testing
