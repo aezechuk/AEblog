@@ -9,7 +9,7 @@ This repository contains the source code for my personal blog and security writi
 
 The project began as a way to deepen my understanding of Flask and backend systems, and evolved into a production-deployed application supporting long-form technical writing.
 
-🌐 **Live site:** https://arielleezechukwu.com
+🌐 **Live site:** under construction, will be redeployed on Render
 
 ▶️ **Watch the Project Demo Video: Update coming soon**  https://www.loom.com/share/73e3d1cd58074a8d9366e015e28edaca
 
